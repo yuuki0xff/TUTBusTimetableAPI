@@ -1,24 +1,31 @@
 import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import Header, { LinkProps } from './components/Header'
+import Header from './components/Header'
+import APIDoc from './pages/APIDocs'
+import Contacts from './pages/Contacts'
 import Home from './pages/Home/'
 
+import { LinkType } from 'lib/types'
 import { Container } from 'react-bootstrap'
 import styled from 'styled-components'
 
 function App() {
-  const headerLinks: LinkProps[] = [
+  const headerLinks: LinkType[] = [
     {
       name: 'Home',
-      url: '#Home'
+      path: '/',
+      component: Home
     },
     {
       name: 'API Doc',
-      url: '#api'
+      path: '/api/v1/docs',
+      component: APIDoc
     },
     {
       name: 'Contacts',
-      url: '#contacts'
+      path: '/contacts',
+      component: Contacts
     }
   ]
 
@@ -26,7 +33,11 @@ function App() {
     <>
       <Header title='TUT Bus Timetable API' navLists={headerLinks} />
       <MainContainer>
-        <Home />
+        <Router>
+          {headerLinks.map(page => {
+            return <Route exact path={page.path} component={page.component} />
+          })}
+        </Router>
       </MainContainer>
     </>
   )
